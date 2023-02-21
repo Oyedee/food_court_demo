@@ -1,0 +1,68 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http/http.dart' as http;
+
+import '../features/weather_page/models/location_weather_data.dart';
+import '../features/weather_page/models/weather_response.dart';
+import '../services/api_keys.dart';
+import '../services/api_service.dart';
+
+class WeatherRepo {
+  final OpenWeatherMapAPI api;
+  final http.Client client;
+
+  WeatherRepo({required this.api, required this.client});
+  Future<WeatherData> getWeather({required String city}) => _getData(
+        uri: api.weather(city),
+        builder: (data) => WeatherData.fromJson(data),
+      );
+
+  Future<LocationWeatherData> getCurrentLocationWeather({required double lat, required double long}) {
+    print('I got here');
+    print('lat: $lat, long: $long');
+    return _getData(
+      uri: api.currentLocationWeather(lat, long),
+      builder: (data) => LocationWeatherData.fromJson(data),
+    );
+  }
+
+  Future<T> _getData<T>({
+    required Uri uri,
+    required T Function(dynamic data) builder,
+  }) async {
+    print('This is the uri: $uri');
+    try {
+      final response = await client.get(uri);
+      print('code: ${response.statusCode}');
+      switch (response.statusCode) {
+        case 200:
+          final data = json.decode(response.body);
+          //print('This is the data from repo: $data');
+          return builder(data);
+        case 401:
+          //throw const APIError.invalidApiKey();
+          throw 'Invalid api key';
+        case 404:
+          //throw const APIError.notFound();
+          throw 'not found';
+        default:
+          //throw const APIError.unknown();
+          throw 'Unknown error';
+      }
+    } on SocketException catch (_) {
+      //throw const APIError.noInternetConnection();
+      throw 'No internet connection';
+    }
+  }
+}
+
+/// Providers used by rest of the app
+final weatherRepoProvider = Provider<WeatherRepo>((ref) {
+  const apiKey = APIKeys.openWeatherAPIKey;
+  return WeatherRepo(
+    api: OpenWeatherMapAPI(apiKey),
+    client: http.Client(),
+  );
+});
