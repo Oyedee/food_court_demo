@@ -62,7 +62,6 @@ class _CurrentWeatherState extends ConsumerState<CurrentWeather> {
 
   @override
   Widget build(BuildContext context) {
-    final city = ref.watch(cityProvider);
     final lagosWeather = ref.watch(currentWeatherControllerProvider(ref.read(cityProvider)));
     final abujaWeather = ref.watch(currentWeatherControllerProvider(ref.read(city2Provider)));
     final ibadanWeather = ref.watch(currentWeatherControllerProvider(ref.read(city3Provider)));
@@ -137,7 +136,7 @@ class _CurrentWeatherState extends ConsumerState<CurrentWeather> {
                         ),
                       ),
                       const SizedBox(height: 30),
-                      Text(ref.read(cityProvider), style: Theme.of(context).textTheme.headline4),
+                      Text(ref.read(cityProvider), style: Theme.of(context).textTheme.headlineMedium),
                       const SizedBox(height: 30),
                       lagosWeather.when(
                         data: (weatherData) => CurrentWeatherContents(data: weatherData),
@@ -188,7 +187,7 @@ class _CurrentWeatherState extends ConsumerState<CurrentWeather> {
                         ),
                       ),
                       const SizedBox(height: 30),
-                      Text(ref.read(city2Provider), style: Theme.of(context).textTheme.headline4),
+                      Text(ref.read(city2Provider), style: Theme.of(context).textTheme.headlineMedium),
                       const SizedBox(height: 30),
                       abujaWeather.when(
                         data: (weatherData) => CurrentWeatherContents(data: weatherData),
@@ -239,7 +238,7 @@ class _CurrentWeatherState extends ConsumerState<CurrentWeather> {
                         ),
                       ),
                       const SizedBox(height: 30),
-                      Text(ref.read(city3Provider), style: Theme.of(context).textTheme.headline4),
+                      Text(ref.read(city3Provider), style: Theme.of(context).textTheme.headlineMedium),
                       const SizedBox(height: 30),
                       ibadanWeather.when(
                         data: (weatherData) => CurrentWeatherContents(data: weatherData),
@@ -277,9 +276,9 @@ class CurrentWeatherContents extends ConsumerWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         WeatherIconImage(iconUrl: 'https://openweathermap.org/img/wn/$icon@2x.png', size: 120),
-        Text(temp ?? '', style: textTheme.headline2),
-        Text(description ?? '', textAlign: TextAlign.center, style: textTheme.headline2),
-        Text(highAndLow, style: textTheme.bodyText2),
+        Text(temp, style: textTheme.displayMedium),
+        Text(description ?? '', textAlign: TextAlign.center, style: textTheme.displayMedium),
+        Text(highAndLow, style: textTheme.bodySmall),
         Text(cityName, style: textTheme.bodyMedium),
       ],
     );

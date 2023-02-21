@@ -41,9 +41,9 @@ class CurrentLocationWeatherPage extends ConsumerWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     WeatherIconImage(iconUrl: 'https://openweathermap.org/img/wn/$icon@2x.png', size: 120),
-                    Text(temp ?? '', style: textTheme.headline2),
-                    Text(description ?? '', textAlign: TextAlign.center, style: textTheme.headline2),
-                    Text(highAndLow, style: textTheme.bodyText2),
+                    Text(temp, style: textTheme.displayMedium),
+                    Text(description ?? '', textAlign: TextAlign.center, style: textTheme.displayMedium),
+                    Text(highAndLow, style: textTheme.bodyMedium),
                     Text(cityName, style: textTheme.bodyMedium),
                   ],
                 );

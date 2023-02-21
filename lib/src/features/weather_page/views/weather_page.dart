@@ -23,21 +23,27 @@ class _WeatherPageState extends ConsumerState<WeatherPage> {
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: Text('Location services are disabled. Please enable the services')));
+      if (context.mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(const SnackBar(content: Text('Location services are disabled. Please enable the services')));
+      }
       return false;
     }
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Location permissions are denied')));
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Location permissions are denied')));
+        }
         return false;
       }
     }
     if (permission == LocationPermission.deniedForever) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Location permissions are permanently denied, we cannot request permissions.')));
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text('Location permissions are permanently denied, we cannot request permissions.')));
+      }
       return false;
     }
     return true;
@@ -84,7 +90,6 @@ class _WeatherPageState extends ConsumerState<WeatherPage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
-            print('current position: $_currentPosition');
             ref.read(currentLocationWeatherControllerProvider.notifier).getCurrentLocationWeather(
                 lat: _currentPosition?.latitude ?? 0, long: _currentPosition?.longitude ?? 0);
             Navigator.push(context, MaterialPageRoute(builder: (context) => const CurrentLocationWeatherPage()));
