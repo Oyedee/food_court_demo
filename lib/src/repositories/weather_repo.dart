@@ -20,8 +20,6 @@ class WeatherRepo {
       );
 
   Future<LocationWeatherData> getCurrentLocationWeather({required double lat, required double long}) {
-    print('I got here');
-    print('lat: $lat, long: $long');
     return _getData(
       uri: api.currentLocationWeather(lat, long),
       builder: (data) => LocationWeatherData.fromJson(data),
@@ -32,23 +30,18 @@ class WeatherRepo {
     required Uri uri,
     required T Function(dynamic data) builder,
   }) async {
-    print('This is the uri: $uri');
     try {
       final response = await client.get(uri);
-      print('code: ${response.statusCode}');
       switch (response.statusCode) {
         case 200:
           final data = json.decode(response.body);
-          //print('This is the data from repo: $data');
           return builder(data);
         case 401:
-          //throw const APIError.invalidApiKey();
-          throw 'Invalid api key';
+          final data = json.decode(response.body);
+          throw data['message'] ?? 'Invalid api key';
         case 404:
-          //throw const APIError.notFound();
           throw 'not found';
         default:
-          //throw const APIError.unknown();
           throw 'Unknown error';
       }
     } on SocketException catch (_) {

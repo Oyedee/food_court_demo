@@ -15,7 +15,7 @@ class CurrentLocationWeatherPage extends ConsumerWidget {
     final currentLocation = ref.watch(currentLocationWeatherControllerProvider);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Location Weather'),
+        title: const Text('Current Location Weather'),
       ),
       body: Container(
         width: double.infinity,
@@ -36,6 +36,7 @@ class CurrentLocationWeatherPage extends ConsumerWidget {
                 final highAndLow = 'H:$maxTemp° L:$minTemp°';
                 final description = data.weather![0].description;
                 final icon = data.weather![0].icon;
+                final cityName = data.name ?? "";
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -43,13 +44,14 @@ class CurrentLocationWeatherPage extends ConsumerWidget {
                     Text(temp ?? '', style: textTheme.headline2),
                     Text(description ?? '', textAlign: TextAlign.center, style: textTheme.headline2),
                     Text(highAndLow, style: textTheme.bodyText2),
+                    Text(cityName, style: textTheme.bodyMedium),
                   ],
                 );
               },
               error: (error, stackTrace) {
                 return Center(child: Text(error.toString()));
               },
-              loading: () => Center(child: const CircularProgressIndicator(color: AppColors.accentColor))),
+              loading: () => const Center(child: CircularProgressIndicator(color: AppColors.accentColor))),
         ),
       ),
     );

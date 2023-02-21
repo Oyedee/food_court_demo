@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_court_demo/src/repositories/weather_repo.dart';
 
@@ -17,7 +15,6 @@ class CityCurrentWeatherController extends StateNotifier<AsyncValue<WeatherData>
       state = const AsyncValue.loading();
       final weather = await _weatherRepo.getWeather(city: city);
       state = AsyncValue.data(WeatherData.fromJson(weather.toJson()));
-      log('This is the weather data: ${weather.toJson()}');
     } catch (e, stackTrace) {
       state = AsyncValue.error(e.toString(), stackTrace);
     }

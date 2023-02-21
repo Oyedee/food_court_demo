@@ -96,7 +96,7 @@ class _CurrentWeatherState extends ConsumerState<CurrentWeather> {
             height: 500,
             child: TabBarView(
               children: [
-                Container(
+                SizedBox(
                   height: 200,
                   //decoration: const BoxDecoration(color: AppColors.rainBlueDark),
                   child: Column(
@@ -138,6 +138,7 @@ class _CurrentWeatherState extends ConsumerState<CurrentWeather> {
                       ),
                       const SizedBox(height: 30),
                       Text(ref.read(cityProvider), style: Theme.of(context).textTheme.headline4),
+                      const SizedBox(height: 30),
                       lagosWeather.when(
                         data: (weatherData) => CurrentWeatherContents(data: weatherData),
                         loading: () => const Center(child: CircularProgressIndicator(color: AppColors.accentColor)),
@@ -146,7 +147,7 @@ class _CurrentWeatherState extends ConsumerState<CurrentWeather> {
                     ],
                   ),
                 ),
-                Container(
+                SizedBox(
                   height: 200,
                   //decoration: const BoxDecoration(color: AppColors.accentColor),
                   child: Column(
@@ -188,6 +189,7 @@ class _CurrentWeatherState extends ConsumerState<CurrentWeather> {
                       ),
                       const SizedBox(height: 30),
                       Text(ref.read(city2Provider), style: Theme.of(context).textTheme.headline4),
+                      const SizedBox(height: 30),
                       abujaWeather.when(
                         data: (weatherData) => CurrentWeatherContents(data: weatherData),
                         loading: () => const Center(child: CircularProgressIndicator(color: AppColors.accentColor)),
@@ -196,7 +198,7 @@ class _CurrentWeatherState extends ConsumerState<CurrentWeather> {
                     ],
                   ),
                 ),
-                Container(
+                SizedBox(
                   height: 200,
                   //decoration: const BoxDecoration(color: AppColors.rainBlueLight),
                   child: Column(
@@ -238,6 +240,7 @@ class _CurrentWeatherState extends ConsumerState<CurrentWeather> {
                       ),
                       const SizedBox(height: 30),
                       Text(ref.read(city3Provider), style: Theme.of(context).textTheme.headline4),
+                      const SizedBox(height: 30),
                       ibadanWeather.when(
                         data: (weatherData) => CurrentWeatherContents(data: weatherData),
                         loading: () => const Center(child: CircularProgressIndicator(color: AppColors.accentColor)),
@@ -269,6 +272,7 @@ class CurrentWeatherContents extends ConsumerWidget {
     final highAndLow = 'H:$maxTemp° L:$minTemp°';
     final description = data.weather![0].description;
     final icon = data.weather![0].icon;
+    final cityName = data.name ?? "";
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -276,6 +280,7 @@ class CurrentWeatherContents extends ConsumerWidget {
         Text(temp ?? '', style: textTheme.headline2),
         Text(description ?? '', textAlign: TextAlign.center, style: textTheme.headline2),
         Text(highAndLow, style: textTheme.bodyText2),
+        Text(cityName, style: textTheme.bodyMedium),
       ],
     );
   }

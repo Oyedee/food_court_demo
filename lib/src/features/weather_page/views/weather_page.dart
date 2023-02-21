@@ -8,8 +8,7 @@ import 'current_location_weather_page.dart';
 import 'current_weather_page.dart';
 
 class WeatherPage extends ConsumerStatefulWidget {
-  const WeatherPage({Key? key, required this.city}) : super(key: key);
-  final String city;
+  const WeatherPage({Key? key}) : super(key: key);
 
   @override
   ConsumerState<WeatherPage> createState() => _WeatherPageState();

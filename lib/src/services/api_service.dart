@@ -11,7 +11,6 @@ class OpenWeatherMapAPI {
       );
 
   Uri currentLocationWeather(double lat, double long) {
-    print(' I got here: lat: $lat, long: $long');
     return _buildUri(
       endpoint: "weather",
       parametersBuilder: () => currentLocationParameters(lat, long),
@@ -37,8 +36,8 @@ class OpenWeatherMapAPI {
       };
 
   Map<String, dynamic> currentLocationParameters(double lat, double long) => {
-        "lat": lat,
-        "long": long,
+        "lat": lat.toString(),
+        "lon": long.toString(),
         "appid": apiKey,
         "units": "metric",
       };
